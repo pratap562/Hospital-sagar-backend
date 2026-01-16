@@ -43,14 +43,13 @@ const appointmentSchema = new Schema<AppointmentDocument>(
     },
     healthIssue: {
       type: String,
-      required: true,
     },
     amountPaid: { type: Number },
     // tokenNumber: { type: Number },                     // these got removed
     appointmentDate: { type: Date, required: true },
-    doctorId: { type: Schema.Types.ObjectId, ref: "User", required: false },
-    doctorName: { type: String, required: false },
-    patientId: { type: Schema.Types.ObjectId, ref: "Patient", required: true },
+    doctorId: { type: Schema.Types.ObjectId, ref: "User" },
+    doctorName: { type: String },
+    patientId: { type: Schema.Types.ObjectId, ref: "Patient" },
     duration: { type: Number }, // Duration in minutes
     slotWindowId: {
       type: Schema.Types.ObjectId,
