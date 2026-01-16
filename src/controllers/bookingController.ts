@@ -103,24 +103,23 @@ export const releaseSlotLock = async (req: Request, res: Response): Promise<void
  */
 export const confirmBooking = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { lockId, name, email, phoneNo, healthIssue, doctorId, doctorName } = req.body;
+    const { lockId, leadId, doctorId, doctorName, duration, amount } = req.body;
 
-    if (!lockId || !name || !email || !phoneNo || !healthIssue || !doctorId || !doctorName) {
+    if (!lockId || !leadId) {
       res.status(400).json({ 
         success: false, 
-        message: 'All fields are required: lockId, name, email, phoneNo, healthIssue, doctorId, doctorName' 
+        message: 'lockId and leadId are required' 
       });
       return;
     }
 
     const bookingData: ConfirmBookingData = {
       lockId,
-      name,
-      email,
-      phoneNo,
-      healthIssue,
+      leadId,
       doctorId,
       doctorName,
+      duration,
+      amount,
     };
 
     const result = await confirmBookingService(bookingData);

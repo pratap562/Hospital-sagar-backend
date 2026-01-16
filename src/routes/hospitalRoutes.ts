@@ -11,12 +11,17 @@ import {
 const router = Router();
 
 // ============================================
+// ============================================
+// PUBLIC ROUTES
+// ============================================
+
+// Get all hospitals (paginated) - Public
+router.get('/', getAllHospitals);
+
+// ============================================
 // ADMIN ONLY ROUTES
 // ============================================
 router.use(authMiddleware);
-
-// Get all hospitals (paginated) - Admin only
-router.get('/', requireRole(['admin']), getAllHospitals);
 
 // Create hospital - Admin only
 router.post('/', requireRole(['admin']), createHospital);

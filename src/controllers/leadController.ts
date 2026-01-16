@@ -45,3 +45,38 @@ export const updateLeadStatus = async (req: Request, res: Response) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+export const getUnconvertedLeads = async (req: Request, res: Response) => {
+  try {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    // 1. Find leads from last 7 days not converted
+    const recentUnconverted = await Lead.find({
+      createdAt: { $gte: sevenDaysAgo },
+      isConverted: false
+    }).sort({ createdAt: -1 });
+
+    const results = [];
+
+    // 2. Filter out those who have a converted lead in the last 30 days
+    for (const lead of recentUnconverted) {
+      const convertedMatch = await Lead.findOne({
+        phoneNumber: lead.phoneNumber,
+        isConverted: true,
+        createdAt: { $gte: thirtyDaysAgo }
+      });
+
+      if (!convertedMatch) {
+        results.push(lead);
+      }
+    }
+
+    res.status(200).json(results);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};

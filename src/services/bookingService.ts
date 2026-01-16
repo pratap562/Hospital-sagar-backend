@@ -164,23 +164,37 @@ export const releaseSlotLock = async (lockId: string) => {
 /**
  * Confirm a booking after successful payment
  */
+import Lead from '../models/Lead';
+
+// ... (existing imports)
+
+/**
+ * Confirm a booking after successful payment
+ */
 export interface ConfirmBookingData {
   lockId: string;
-  name: string;
-  email: string;
-  phoneNo: string;
-  healthIssue: string;
-  doctorId: string;
-  doctorName: string;
-  duration?: number; // Duration in minutes
-  amount?: number; // Total amount paid
+  leadId: string;
+  doctorId?: string;
+  doctorName?: string;
+  duration?: number;
+  amount?: number;
 }
 
 export const confirmBooking = async (data: ConfirmBookingData) => {
-  const { lockId, name, email, phoneNo, healthIssue, doctorId, doctorName, duration, amount } = data;
+  const { lockId, leadId, doctorId, doctorName, duration, amount } = data;
 
   if (!Types.ObjectId.isValid(lockId)) {
     throw new Error('Invalid lock ID');
+  }
+
+  if (!Types.ObjectId.isValid(leadId)) {
+    throw new Error('Invalid lead ID');
+  }
+
+  // Fetch Lead details first
+  const lead = await Lead.findById(leadId);
+  if (!lead) {
+    throw new Error('Lead not found. Cannot proceed with booking.');
   }
 
   // ATOMIC CHECK AND UPDATE
@@ -206,10 +220,14 @@ export const confirmBooking = async (data: ConfirmBookingData) => {
       throw new Error('Slot not found');
     }
 
-    // Create or find patient
-    let patient = await Patient.findOne({ phoneNo });
+    // Create or find patient using Lead data
+    let patient = await Patient.findOne({ phoneNo: lead.phoneNumber });
     if (!patient) {
-      patient = new Patient({ name, email, phoneNo });
+      patient = new Patient({ 
+        name: lead.name, 
+        email: lead.email, 
+        phoneNo: lead.phoneNumber 
+      });
       await patient.save();
     }
 
@@ -232,17 +250,17 @@ export const confirmBooking = async (data: ConfirmBookingData) => {
         
         appointment = new Appointment({
           appointmentId,
-          name,
-          email,
-          phoneNo,
-          healthIssue,
+          name: lead.name,
+          email: lead.email,
+          phoneNo: lead.phoneNumber,
+          healthIssue: lead.healthIssue,
           hospitalId: slot.hospitalId,
           mode: 'offline', // Default to offline for slot bookings
           status: 'booked',
           amountPaid: amount,
           duration: duration,
           appointmentDate: slot.slotDate,
-          doctorId: new Types.ObjectId(doctorId),
+          doctorId: doctorId ? new Types.ObjectId(doctorId) : undefined,
           doctorName,
           patientId: patient._id,
           slotWindowId: slot._id,
@@ -269,6 +287,9 @@ export const confirmBooking = async (data: ConfirmBookingData) => {
     await SlotWindow.findByIdAndUpdate(slot._id, { $inc: { bookedCount: 1 } });
 
     // Note: Lock is already marked as booked.
+
+    // Mark Lead as converted
+    await Lead.findByIdAndUpdate(leadId, { isConverted: true });
 
     return {
       success: true,

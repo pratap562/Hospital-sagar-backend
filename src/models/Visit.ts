@@ -37,8 +37,13 @@ const visitSchema = new Schema<VisitDocument>(
   {
     visitToken: { type: Number, required: true },
     patientId: { type: Schema.Types.ObjectId, ref: "Patient", required: true },
-    hospitalId: { type: Schema.Types.ObjectId, ref: "Hospital", required: true, index: true },
-    doctorId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    hospitalId: {
+      type: Schema.Types.ObjectId,
+      ref: "Hospital",
+      required: true,
+      index: true,
+    },
+    doctorId: { type: Schema.Types.ObjectId, ref: "User" },
     status: { type: String, enum: ["waiting", "done"], required: true },
     disease: [{ type: String, required: true }],
     diseaseDuration: { type: String },

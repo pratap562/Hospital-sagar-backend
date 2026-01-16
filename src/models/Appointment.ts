@@ -31,7 +31,11 @@ const appointmentSchema = new Schema<AppointmentDocument>(
     email: { type: String, required: true }, // these got added
     phoneNo: { type: String, required: true }, // these got added
     mode: { type: String, enum: ["online", "offline"], required: true },
-    hospitalId: { type: Schema.Types.ObjectId, ref: "Hospital", required: true },
+    hospitalId: {
+      type: Schema.Types.ObjectId,
+      ref: "Hospital",
+      required: true,
+    },
     status: {
       type: String,
       enum: ["booked", "cancelled", "checked_in"],
@@ -39,24 +43,13 @@ const appointmentSchema = new Schema<AppointmentDocument>(
     },
     healthIssue: {
       type: String,
-      enum: [
-        "diabetes",
-        "thyroid",
-        "joint disorder",
-        "skin disorder",
-        "hypertension",
-        "digestive problems",
-        "gynecological problems",
-        "hairfall problems",
-        "other",
-      ],
       required: true,
     },
     amountPaid: { type: Number },
     // tokenNumber: { type: Number },                     // these got removed
     appointmentDate: { type: Date, required: true },
-    doctorId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    doctorName: { type: String, required: true },
+    doctorId: { type: Schema.Types.ObjectId, ref: "User", required: false },
+    doctorName: { type: String, required: false },
     patientId: { type: Schema.Types.ObjectId, ref: "Patient", required: true },
     duration: { type: Number }, // Duration in minutes
     slotWindowId: {

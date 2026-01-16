@@ -8,6 +8,6 @@ const router = Router();
 router.get("/", getMetadata);
 
 // Only admin can update metadata
-router.patch("/", protect, restrictTo("SUPER_ADMIN"), updateMetadata);
+router.patch("/", protect, restrictTo("ADMIN"), updateMetadata);
 
 export default router;
