@@ -48,7 +48,7 @@ export const updateLeadStatus = async (req: Request, res: Response) => {
   }
 };
 
-export const getUnconvertedLeads = async (req: Request, res: Response) => {
+export const getUnconvertedLeads = async (_req: Request, res: Response) => {
   try {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);

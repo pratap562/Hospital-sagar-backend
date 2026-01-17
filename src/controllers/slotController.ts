@@ -69,7 +69,7 @@ export const getSlotsByHospital = async (req: Request, res: Response): Promise<v
     const limit = parseInt(req.query.limit as string) || 10;
 
     // Get hospital ObjectId
-    const hospital = await findHospitalObjectId(hospitalId);
+    const hospital = await findHospitalObjectId(hospitalId as string);
 
     const result = await getSlotsByHospitalService(hospital._id, { page, limit });
 
@@ -91,7 +91,7 @@ export const deleteSlot = async (req: Request, res: Response): Promise<void> => 
   try {
     const { slotId } = req.params;
 
-    await deleteSlotService(slotId);
+    await deleteSlotService(slotId as string);
 
     res.status(200).json({
       success: true,
@@ -121,7 +121,7 @@ export const getSlotById = async (req: Request, res: Response): Promise<void> =>
   try {
     const { slotId } = req.params;
 
-    const slot = await getSlotByIdService(slotId);
+    const slot = await getSlotByIdService(slotId as string);
 
     res.status(200).json({
       success: true,

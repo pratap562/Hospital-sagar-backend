@@ -283,6 +283,10 @@ export const confirmBooking = async (data: ConfirmBookingData) => {
       }
     }
 
+    if (!appointment) {
+      throw new Error('Failed to create appointment after retries');
+    }
+
     // Increment bookedCount on the slot
     await SlotWindow.findByIdAndUpdate(slot._id, { $inc: { bookedCount: 1 } });
 

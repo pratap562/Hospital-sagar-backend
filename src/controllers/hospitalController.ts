@@ -69,7 +69,7 @@ export const updateHospital = async (req: Request, res: Response): Promise<void>
 
     const updateData: UpdateHospitalData = { name, city };
 
-    const hospital = await updateHospitalService(hospitalId, updateData);
+    const hospital = await updateHospitalService(hospitalId as string, updateData);
 
     res.status(200).json({
       success: true,
@@ -89,7 +89,7 @@ export const getHospitalById = async (req: Request, res: Response): Promise<void
   try {
     const { hospitalId } = req.params;
 
-    const hospital = await getHospitalByIdService(hospitalId);
+    const hospital = await getHospitalByIdService(hospitalId as string);
 
     res.status(200).json({
       success: true,

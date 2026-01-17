@@ -135,7 +135,7 @@ export const createUser = async (userData: CreateUserData) => {
   const user = new User(newUserData);
   await user.save();
 
-  const userResponse = user.toObject();
+  const userResponse = user.toObject() as any;
   delete userResponse.passwordHash;
   delete userResponse.__v;
 

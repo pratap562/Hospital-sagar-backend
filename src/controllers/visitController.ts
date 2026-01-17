@@ -87,7 +87,7 @@ export const updateVisitDetails = async (req: Request, res: Response): Promise<v
     const { visitId } = req.params;
     const medicalDetails = req.body;
 
-    const visit = await updateVisitMedicalDetails(visitId, medicalDetails);
+    const visit = await updateVisitMedicalDetails(visitId as string, medicalDetails);
 
     res.status(200).json({
       success: true,
@@ -107,7 +107,7 @@ export const getPatientHistory = async (req: Request, res: Response): Promise<vo
   try {
     const { patientId } = req.params;
 
-    const history = await getPatientVisitsHistory(patientId);
+    const history = await getPatientVisitsHistory(patientId as string);
 
     res.status(200).json({
       success: true,
