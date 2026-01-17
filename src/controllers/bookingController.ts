@@ -20,7 +20,7 @@ export const getPublicSlots = async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    const slots = await getPublicSlotsService(hospitalId, date as string);
+    const slots = await getPublicSlotsService(hospitalId as string, date as string);
 
     res.status(200).json({
       success: true,
@@ -79,7 +79,7 @@ export const releaseSlotLock = async (req: Request, res: Response): Promise<void
       return;
     }
 
-    const result = await releaseSlotLockService(lockId);
+    const result = await releaseSlotLockService(lockId as string);
 
     res.status(200).json({
       success: true,

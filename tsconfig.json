@@ -4,11 +4,25 @@
     "module": "commonjs",
     "rootDir": "src",
     "outDir": "dist",
+
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "useUnknownInCatchVariables": true,
+
     "esModuleInterop": true,
-    "strict": false,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmitOnError": false
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "skipLibCheck": false,
+    "noEmitOnError": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

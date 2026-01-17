@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Metadata } from "../models/Metadata";
 
-export const getMetadata = async (req: Request, res: Response): Promise<void> => {
+export const getMetadata = async (_req: Request, res: Response): Promise<void> => {
   try {
     let metadata = await Metadata.findOne();
     if (!metadata) {

@@ -34,12 +34,7 @@ export const getAppointmentById = async (req: Request, res: Response): Promise<v
   try {
     const { appointmentId } = req.params;
 
-    if (!appointmentId) {
-      res.status(400).json({ success: false, message: 'Appointment ID is required' });
-      return;
-    }
-
-    const appointment = await getAppointmentByPublicIdService(appointmentId);
+    const appointment = await getAppointmentByPublicIdService(appointmentId as string);
 
     res.status(200).json({
       success: true,
@@ -58,12 +53,7 @@ export const checkInAppointment = async (req: Request, res: Response): Promise<v
   try {
     const { appointmentId } = req.params;
 
-    if (!appointmentId) {
-      res.status(400).json({ success: false, message: 'Appointment ID is required' });
-      return;
-    }
-
-    const appointment = await updateAppointmentStatusService(appointmentId, 'checked_in');
+    const appointment = await updateAppointmentStatusService(appointmentId as string, 'checked_in');
 
     res.status(200).json({
       success: true,

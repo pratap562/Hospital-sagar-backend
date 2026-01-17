@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { Visit } from '../models/Visit';
-import mongoose from 'mongoose';
 
 export const getHospitalVisitsAnalytics = async (req: Request, res: Response) => {
   try {

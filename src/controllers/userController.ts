@@ -197,7 +197,7 @@ export const updateUser = async (
       extraLine,
     };
 
-    const updatedUser = await updateUserService(userId, updateData);
+    const updatedUser = await updateUserService(userId as string, updateData);
 
     res.status(200).json({
       success: true,
@@ -248,7 +248,7 @@ export const changeUserPassword = async (
       return;
     }
 
-    await changeUserPasswordService(userId, newPassword);
+    await changeUserPasswordService(userId as string, newPassword);
 
     res.status(200).json({
       success: true,
@@ -283,7 +283,7 @@ export const getUserById = async (
   try {
     const { userId } = req.params;
 
-    const user = await getUserByIdService(userId);
+    const user = await getUserByIdService(userId as string);
 
     res.status(200).json({
       success: true,
@@ -342,7 +342,7 @@ export const getCurrentUser = async (
   }
 };
 
-export const logout = async (req: Request, res: Response): Promise<void> => {
+export const logout = async (_req: Request, res: Response): Promise<void> => {
   try {
     // Clear the JWT token cookie
     res.cookie("token", "", {

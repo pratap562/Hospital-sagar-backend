@@ -9,12 +9,7 @@ export const getPatientById = async (req: Request, res: Response): Promise<void>
   try {
     const { patientId } = req.params;
 
-    if (!patientId) {
-      res.status(400).json({ success: false, message: 'Patient ID is required' });
-      return;
-    }
-
-    const patient = await getPatientByIdService(patientId);
+    const patient = await getPatientByIdService(patientId as string);
 
     res.status(200).json({
       success: true,
